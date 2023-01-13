@@ -2,6 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
 var path = require("path");
+const request = require("request");
+const fetch = require("node-fetch");
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
@@ -55,6 +57,21 @@ function activate(context) {
         }
       }
     }
+
+    // @ts-ignore
+    fetch(
+      "https://www.googleapis.com/customsearch/v1?key=AIzaSyC6gKMMoXgPkOnnC1TTj6C60aeLxI1v_ys&cx=32c6f4cdb22f343b0&q=tensorflow"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        vscode.window.showInformationMessage(
+          `Data received: ${JSON.stringify(data)}`
+        );
+        console.log(JSON.stringify(data, null, 2));
+      })
+      .catch((error) => {
+        vscode.window.showErrorMessage(`Error: ${error}`);
+      });
 
     // Display a message box to the user
     // vscode.window.showInformationMessage("Hello World from doccy!");
