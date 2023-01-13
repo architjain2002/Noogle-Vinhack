@@ -10,13 +10,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:doccy.helloWorld"
+    "onCommand:doccy.getText"
   ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "getFileText",
+        "command": "doccy.getText",
         "title": "Get text"
       }
     ]
@@ -38,6 +38,8 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "axios": "^1.2.2",
+    "cheerio": "^1.0.0-rc.12",
     "node-fetch": "^2.6.8",
     "xhr2": "^0.2.1"
   }
