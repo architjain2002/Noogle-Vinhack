@@ -10,6 +10,8 @@ const fetch = require("node-fetch");
 /**
  * @param {vscode.ExtensionContext} context
  */
+let panel;
+
 function activate(context) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
@@ -72,6 +74,44 @@ function activate(context) {
       .catch((error) => {
         vscode.window.showErrorMessage(`Error: ${error}`);
       });
+
+    let panel = vscode.window.createWebviewPanel(
+      "browser", // Identifies the type of the webview. Used internally
+      "Browser", // Title of the panel displayed to the user
+      vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+      {
+        enableScripts: true,
+      }
+    );
+
+    // Navigate to a website
+    panel.webview.html = `<html><body>Loading...</body></html>`;
+
+    // Use XMLHttpRequest to fetch the HTML content of the website
+    var XMLHttpRequest = require("xhr2");
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://www.tensorflow.org", true);
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // Update the webview's HTML content
+        panel.webview.html = xhr.responseText;
+      }
+    };
+    xhr.send();
+
+    // Handle navigation events
+    panel.webview.onDidReceiveMessage(
+      (message) => {
+        switch (message.command) {
+          case "navigate":
+            xhr.open("GET", message.url, true);
+            xhr.send();
+            break;
+        }
+      },
+      null,
+      context.subscriptions
+    );
 
     // Display a message box to the user
     // vscode.window.showInformationMessage("Hello World from doccy!");

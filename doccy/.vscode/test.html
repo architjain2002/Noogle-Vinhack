@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lottery Platform</title>
+    <style>
+        /* CSS styles for the page */
+        /* Add your styles here */
+    </style>
+</head>
+
+<body>
+    <h1>Lottery Platform</h1>
+    <form>
+        <label>Enter your guess:</label>
+        <select id="guess">
+            <option value="low">Low</option>
+            <option value="high">High</option>
+        </select>
+        <br>
+        <button id="submitBtn">Submit</button>
+    </form>
+    <br>
+    <div id="result"></div>
+    <script>
+        var number = Math.floor(Math.random() * 100) + 1;
+        var guessInput = document.getElementById("guess");
+        var submitBtn = document.getElementById("submitBtn");
+        var resultDiv = document.getElementById("result");
+        submitBtn.addEventListener("click", checkGuess);
+
+        function checkGuess(event) {
+            event.preventDefault();
+            var guess = guessInput.value;
+            var result = "";
+            if (guess === "low" && number < 50) {
+                result = "Congratulations, you won the lottery! The number was " + number;
+            } else if (guess === "high" && number > 50) {
+                result = "Congratulations, you won the lottery! The number was " + number;
+            } else {
+                result = "Sorry, you lost. The number was " + number;
+            }
+            resultDiv.innerHTML = result;
+        }
+    </script>
+</body>
+
+</html>
